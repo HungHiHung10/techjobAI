@@ -1,5 +1,16 @@
 import axios from 'axios'
 
+function defaultApiBaseUrl() {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname
+    if (host !== 'localhost' && host !== '127.0.0.1') {
+      return '/api'
+    }
+  }
+  return 'http://localhost:8000/api'
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Central Axios instance. Point VITE_API_URL at your real backend when it's
 // ready — every service in src/services/* is already written to call through
@@ -7,7 +18,7 @@ import axios from 'axios'
 // service (see the `USE_MOCK` flag at the top of each service file).
 // ─────────────────────────────────────────────────────────────────────────────
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: defaultApiBaseUrl(),
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 })
