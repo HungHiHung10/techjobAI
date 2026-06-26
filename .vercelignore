@@ -1,0 +1,15 @@
+data-pipeline/
+render.yaml
+
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+node_modules/
+dist/
+.git/
+
+CV.pdf
+main.pdf
+done.txt

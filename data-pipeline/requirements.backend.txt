@@ -1,0 +1,22 @@
+# Production backend only. Keep this separate from requirements.txt because
+# the full data pipeline image includes Airflow, Spark, dbt, crawlers, etc.
+
+python-dotenv==1.0.1
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+python-multipart>=0.0.9
+
+psycopg2-binary>=2.9.0
+sqlalchemy>=1.4.0,<2.0.0
+numpy==1.26.4
+sentence-transformers==3.0.1
+
+langchain>=0.3.0
+langchain-groq>=0.3.0
+langchain-openai>=0.3.0
+langgraph>=0.4.0
+mcp[cli]>=1.0.0
+
+scikit-learn>=1.4.0
+joblib>=1.3.0
+pdfplumber>=0.10.0

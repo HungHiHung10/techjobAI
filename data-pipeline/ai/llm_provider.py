@@ -98,8 +98,11 @@ def create_chat_model(
         "openrouter": {
             "base_url": "https://openrouter.ai/api/v1",
             "default_headers": {
-                "HTTP-Referer": "http://localhost:5173",
-                "X-OpenRouter-Title": "TechJob AI",
+                "HTTP-Referer": os.getenv(
+                    "OPENROUTER_HTTP_REFERER",
+                    os.getenv("PUBLIC_APP_URL", "https://techjob-ai.vercel.app"),
+                ),
+                "X-OpenRouter-Title": os.getenv("OPENROUTER_APP_TITLE", "TechJob AI"),
             },
         },
         "mistral": {"base_url": "https://api.mistral.ai/v1"},

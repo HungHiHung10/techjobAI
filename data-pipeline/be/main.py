@@ -28,6 +28,10 @@ DB_PASS = os.getenv("NEON_PASSWORD", os.getenv("POSTGRES_PASSWORD", "techjob123"
 DB_NAME = os.getenv("NEON_DB", os.getenv("POSTGRES_DB", "techjob_ai"))
 DB_SSLMODE = "require" if os.getenv("NEON_HOST") else os.getenv("PGSSLMODE", "prefer")
 
+def _env_list(name: str, default: str = "") -> list[str]:
+    raw = os.getenv(name, default)
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
 # Force using Local Postgres (bypassing NeonDB)
 # DB_HOST = os.getenv("POSTGRES_HOST", "localhost")
 # DB_PORT = os.getenv("POSTGRES_PORT", "5432")
@@ -125,7 +129,12 @@ def get_db():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_env_list(
+        "CORS_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173,https://techjob-ai.vercel.app",
+    ),
+    allow_origin_regex=os.getenv("CORS_ORIGIN_REGEX") or None,
+    allow_credentials=os.getenv("CORS_ALLOW_CREDENTIALS", "true").lower() == "true",
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -143,6 +152,16 @@ if STATIC_DIR.exists():
 def root(conn = Depends(get_db)):
     """Redirect to frontend UI."""
     return RedirectResponse(url="/static/index.html")
+
+
+@app.get("/api/health")
+def health():
+    """Liveness endpoint for production platforms. Does not call DB or LLM."""
+    return {
+        "status": "ok",
+        "service": "techjob-ai-backend",
+        "version": app.version,
+    }
 
 
 @app.get("/api/health/ai")

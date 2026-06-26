@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: techjob-ai-backend
+    env: docker
+    rootDir: data-pipeline
+    dockerfilePath: ./Dockerfile.backend
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PUBLIC_APP_URL
+        value: https://techjob-ai.vercel.app
+      - key: OPENROUTER_HTTP_REFERER
+        value: https://techjob-ai.vercel.app
+      - key: OPENROUTER_APP_TITLE
+        value: TechJob AI
+      - key: CORS_ORIGINS
+        value: https://techjob-ai.vercel.app
+      - key: PGSSLMODE
+        value: require
+      - key: LLM_PROVIDER_CHAIN
+        value: openrouter,mistral,cerebras,groq
+      - key: OPENROUTER_MODEL
+        value: nvidia/nemotron-nano-9b-v2:free
+      - key: MISTRAL_MODEL
+        value: mistral-small-latest
+      - key: CEREBRAS_MODEL
+        value: gpt-oss-120b
+      - key: GROQ_MODEL
+        value: llama-3.1-8b-instant
+      - key: GROQ_FALLBACK_MODEL
+        value: llama-3.1-8b-instant
+      - key: POSTGRES_HOST
+        sync: false
+      - key: POSTGRES_PORT
+        sync: false
+      - key: POSTGRES_DB
+        sync: false
+      - key: POSTGRES_USER
+        sync: false
+      - key: POSTGRES_PASSWORD
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: MISTRAL_API_KEY
+        sync: false
+      - key: CEREBRAS_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_FALLBACK_API_KEY
+        sync: false
