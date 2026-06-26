@@ -28,4 +28,4 @@ Thumbs.db
 .venv/
 data/
 scratch_fetch.py
-.vercel
+.vercel/
